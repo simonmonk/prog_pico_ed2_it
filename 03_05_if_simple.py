@@ -1,4 +1,4 @@
-response = input("Enter a number: ")
-number = int(response)
-if number > 10:
-    print("That's a big number")
+risposta = input("Inserisci un numero: ")
+numero = int(risposta)
+if numero > 10:
+    print("Che numero grande!")
