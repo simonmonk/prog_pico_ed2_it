@@ -1,0 +1,17 @@
+from machine import ADC, Pin
+from utime import sleep
+
+analog = ADC(28)
+
+def volts_da_lettura(lettura):
+    min_lettura = 336
+    max_lettura = 65534
+    delta_lettura = max_lettura - min_lettura
+    volts_per_lettura = 3.3 / delta_lettura
+    volts = (lettura - min_lettura) * volts_per_lettura
+    return volts
+
+while True:
+    lettura = analog.read_u16()
+    print(volts_da_lettura(lettura))
+    sleep(0.5)
