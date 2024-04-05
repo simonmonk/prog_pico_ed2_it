@@ -1,9 +1,9 @@
-from microdot import Microdot
+workfrom microdot import Microdot
 from machine import ADC
 import mm_wlan
 
-ssid = 'Monk'
-password = 'd4daaa7eda'
+ssid = 'Network'
+password = 'password'
 
 temp_sensor = ADC(4)
 points_per_volt = 3.3 / 65535
