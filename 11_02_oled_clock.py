@@ -1,59 +1,29 @@
-import array, time
-from machine import Pin
-import rp2
-from random import randint
+from machine import Pin, I2C, Timer
+from ssd1306 import SSD1306_I2C
 
-NUM_LEDS = 24
- 
-# Start of Magic programmable IO code
-@rp2.asm_pio(sideset_init=rp2.PIO.OUT_LOW, out_shiftdir=rp2.PIO.SHIFT_LEFT, autopull=True, pull_thresh=24)
-def ws2812():
-    T1 = 2
-    T2 = 5
-    T3 = 3
-    wrap_target()
-    label("bitloop")
-    out(x, 1)               .side(0)    [T3 - 1]
-    jmp(not_x, "do_zero")   .side(1)    [T1 - 1]
-    jmp("bitloop")          .side(1)    [T2 - 1]
-    label("do_zero")
-    nop()                   .side(0)    [T2 - 1]
-    wrap()
+i2c = I2C(0, sda=Pin(4, pull=Pin.PULL_UP), scl=Pin(5, pull=Pin.PULL_UP))
+oled = SSD1306_I2C(128, 32, i2c)
 
-sm = rp2.StateMachine(0, ws2812, freq=8_000_000, sideset_base=Pin(22))
-sm.active(1) # Start the StateMachine
-pixels = array.array("I", [0 for _ in range(NUM_LEDS)])
-# End of Magic programmable IO code
+h, m, s = (12, 0, 0)
 
-def set_led(led, red, green, blue):
-    pixels[led] = (red << 16) + (green << 8) + blue
+def show_time():
+    oled.fill(0)
+    time_str = "{:02d}:{:02d}:{:02d}".format(h, m, s)
+    print(time_str)
+    oled.text(time_str, 0, 0, 1)
+    oled.show()
 
-def show():
-    sm.put(pixels, 8)
+def tick(timer):
+    global h, m, s
+    s += 1
+    if s == 60:
+        s = 0
+        m += 1
+        if m == 60:
+            m = 0
+            h += 1
+            if h == 24:
+                h = 0
+    show_time()
 
-def clear():
-    for i in range(NUM_LEDS):
-        set_led(i, 0, 0, 0)
-    show()
-    
-def randomize():
-    clear()
-    for i in range(NUM_LEDS):
-        set_led(i, randint(0, 50), randint(0, 50), randint(0, 50))
-        show()
-        time.sleep(0.1)
-    
-clear()
-
-print("Enter the LED's number to turn it on")
-print("or c-clear r-randomize")
-while True:
-    led_str = input("command: ")
-    if (led_str == 'c'):
-        clear()
-    elif (led_str == 'r'):
-        randomize()
-    else:
-        led = int(led_str)
-        set_led(led, 50, 50, 50) # white
-        show()
+Timer().init(freq=1, mode=Timer.PERIODIC, callback=tick)
