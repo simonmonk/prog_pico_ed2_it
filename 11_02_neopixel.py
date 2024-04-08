@@ -4,7 +4,7 @@ import rp2
 from random import randint
 
 NUM_LEDS = 24
-
+ 
 # Start of Magic programmable IO code
 @rp2.asm_pio(sideset_init=rp2.PIO.OUT_LOW, out_shiftdir=rp2.PIO.SHIFT_LEFT, autopull=True, pull_thresh=24)
 def ws2812():
