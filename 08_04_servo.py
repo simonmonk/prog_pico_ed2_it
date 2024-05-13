@@ -1,34 +1,34 @@
 from machine import Pin, PWM
 from utime import sleep
 
-button_up = Pin(14, Pin.IN, Pin.PULL_UP)
-button_down = Pin(15, Pin.IN, Pin.PULL_UP)
+bottone_up = Pin(14, Pin.IN, Pin.PULL_UP)
+bottone_down = Pin(15, Pin.IN, Pin.PULL_UP)
 
 servo = PWM(Pin(16))
-servo.freq(50) # pulse every 20ms
+servo.freq(50) # impulso ogni 20ms
 
-def set_angle(angle, min_pulse_us=500, max_pulse_us=2500):
-    us_per_degree = (max_pulse_us - min_pulse_us) / 180
-    pulse_us = us_per_degree * angle + min_pulse_us
-    # duty 0 to 1023. At 50Hz, each duty_point is 20000/65535 = 0.305 µs/duty_point
-    duty = int(pulse_us / 0.305)
-    # print("angle=" + str(angle) + " pulse_us=" + str(pulse_us) + " duty=" + str(duty))
-    print(angle)
+def set_angle(angolo, impulso_minimo_us=500, impulso_massimo_us=2500):
+    us_per_grado = (impulso_massimo_us - impulso_minimo_us) / 180
+    impulso_us = us_per_grado * angolo + impulso_minimo_us
+    # duty 0 to 1023. A 50Hz, ogni duty_point è 20000/65535 = 0.305 µs/duty_point
+    duty = int(impulso_us / 0.305)
+    # print("angolo =" + str(angolo) + " impulso_us=" + str(impulso_us) + " duty=" + str(duty))
+    print(angolo)
     servo.duty_u16(duty)
     
-angle = 90
+angolo = 90
 set_angle(90)
-min_angle = 10
-max_angle = 160
+min_angolo = 10
+max_angolo = 160
 
 while True:
-    if button_up.value() == 0 and angle <= max_angle:
-        angle += 1
-        set_angle(angle)
-        #print(angle)
+    if bottone_up.value() == 0 and angolo <= max_angolo:
+        angolo += 1
+        set_angle(angolo)
+        #print(angolo)
         sleep(0.01)
-    elif button_down.value() == 0 and angle > min_angle:
-        angle -= 1
-        set_angle(angle)
-        #print(angle)
+    elif bottone_down.value() == 0 and angolo > min_angolo:
+        angolo -= 1
+        set_angle(angolo)
+        #print(angolo)
         sleep(0.01)
