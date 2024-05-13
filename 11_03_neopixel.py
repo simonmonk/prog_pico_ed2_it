@@ -25,8 +25,8 @@ sm.active(1) # Start the StateMachine
 pixels = array.array("I", [0 for _ in range(NUM_LEDS)])
 # End of Magic programmable IO code
 
-def set_led(led, red, green, blue):
-    pixels[led] = (red << 16) + (green << 8) + blue
+def set_led(led, rosso, verde, blu):
+    pixels[led] = (rosso << 16) + (verde << 8) + blue
 
 def show():
     sm.put(pixels, 8)
@@ -45,10 +45,10 @@ def randomize():
     
 clear()
 
-print("Enter the LED's number to turn it on")
-print("or c-clear r-randomize")
+print("Inserire il numero di LED da accendere")
+print("o c-clear r-randomize")
 while True:
-    led_str = input("command: ")
+    led_str = input("comando: ")
     if (led_str == 'c'):
         clear()
     elif (led_str == 'r'):
