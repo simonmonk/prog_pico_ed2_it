@@ -42,10 +42,10 @@ def send_morse_for(character):
                 send_pulse(pulse)
             sleep(dash_duration)
         else:
-            print('unknown character: ' + character)
+            print('carattere sconosciuto: ' + character)
             
 
 while True:
-    text = input('Message: ')
+    text = input('Messaggio: ')
     for character in text:
         send_morse_for(character)
