@@ -12,15 +12,15 @@ codes = {
 
 def send_morse_for(character):
     if character == ' ':
-        print('space')
+        print('spazio')
     else:
         dots_n_dashes = codes.get(character.lower())
         if dots_n_dashes:
             print(character + ' ' + dots_n_dashes)
         else:
-            print('unknown character: ' + character)
+            print('carattere sconosciuto: ' + character)
             
 while True:
-    text = input('Message: ')
+    text = input('Messaggio: ')
     for character in text:
         send_morse_for(character)
