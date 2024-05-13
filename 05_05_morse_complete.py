@@ -3,13 +3,13 @@ from utime import sleep
 
 led = Pin('LED', Pin.OUT)
 
-dot_duration = 0.2
-dash_duration = dot_duration * 3
-word_gap = dot_duration * 7
+durata_punto = 0.2
+durata_linea = durata_punto * 3
+intervallo = durata_punto * 7
 
-durations = {'.' : dot_duration, '-' : dash_duration}
+durate = {'.' : durata_punto, '-' : durata_linea}
 
-codes = {
+codici = {
     'a' : '.-',   'b' : '-...',  'c' : '-.-.',
     'd' : '-..',  'e' : '.',     'f' : '..-.',
     'g' : '--.',  'h' : '....',  'i' : '..',
@@ -21,31 +21,31 @@ codes = {
     'y' : '-.--', 'z' : '--..'
 }
 
-def send_pulse(dot_or_dash):
-    if dot_or_dash == '.':
-        delay = dot_duration
+def send_pulse(punti_e_linee):
+    if punti_e_linee == '.':
+        ritardo = durata_punto
     else:
-        delay = dash_duration
+        ritardo = durata_linea
     led.on()
-    sleep(delay)
+    sleep(ritardo)
     led.off()
-    sleep(delay)
+    sleep(ritardo)
 
-def send_morse_for(character):
-    if character == ' ':
-        sleep(word_gap)
+def send_morse_for(caratttere):
+    if carattere == ' ':
+        sleep(intervallo)
     else:
-        dots_n_dashes = codes.get(character.lower())
-        if dots_n_dashes:
-            print(character + ' ' + dots_n_dashes)
-            for pulse in dots_n_dashes:
-                send_pulse(pulse)
-            sleep(dash_duration)
+        punti_e_linee = codici.get(carattere.lower())
+        if punti_e_linee:
+            print(carattere + ' ' + punti_e_linee)
+            for impulso in punti_e_linee:
+                send_pulse(impulso)
+            sleep(durata_linea)
         else:
-            print('carattere sconosciuto: ' + character)
+            print('carattere sconosciuto: ' + carattere)
             
 
 while True:
-    text = input('Messaggio: ')
-    for character in text:
-        send_morse_for(character)
+    testo = input('Messaggio: ')
+    for carattere in testo:
+        send_morse_for(carattere)
